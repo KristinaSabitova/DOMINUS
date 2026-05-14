@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rtk ls *)",
+      "Bash(python3 -m py_compile dominus/modules/whois_module.py dominus/modules/dns_module.py dominus/core/scoring.py)",
+      "Bash(python3 -m py_compile dominus/modules/ports_module.py dominus/modules/headers_module.py dominus/modules/subdomains_module.py)",
+      "Bash(python3 -m py_compile dominus.py dominus/core/engine.py)",
+      "Bash(python3 -m py_compile dominus/report/generator.py)",
+      "Bash(python3 -c ' *)",
+      "Bash(rtk pip *)",
+      "Bash(python3 *)",
+      "Bash(/Users/sabitova/dominus/.venv/bin/pip install *)",
+      "Bash(/Users/sabitova/dominus/.venv/bin/pip list *)",
+      "Bash(.venv/bin/python dominus.py evolve.es --skip ports --json -v)",
+      "Bash(/Users/sabitova/dominus/.venv/bin/python -c ' *)",
+      "Bash(.venv/bin/python dominus.py evolve.es)",
+      "Bash(xargs -I '{}' /Users/sabitova/dominus/.venv/bin/python -c ' *)",
+      "Bash(command -v nmap)",
+      "Bash(/Users/sabitova/dominus/.venv/bin/python *)",
+      "Bash(.venv/bin/python dominus.py evolve.es --only ports --json --no-html)",
+      "Bash(.venv/bin/python dominus.py evolve.es --json)"
+    ]
+  }
+}

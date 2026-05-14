@@ -1,0 +1,1074 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DOMINUS — {{ target }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* === Design tokens === */
+    :root {
+      --bg: #0a0d12;
+      --bg-2: #0d1117;
+      --surface: #131820;
+      --surface-2: #1a212c;
+      --surface-3: #232b39;
+      --border: #232b39;
+      --border-strong: #353e4d;
+      --text: #e8eef6;
+      --text-muted: #8b94a3;
+      --text-faint: #59616e;
+      --low: #3fb950;
+      --medium: #d29922;
+      --high: #f0883e;
+      --critical: #f85149;
+      --info: #58a6ff;
+      --unknown: #6e7681;
+      --accent: #7c9aff;
+      --gradient: linear-gradient(135deg, #4f5fff 0%, #7c9aff 100%);
+      color-scheme: dark;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      background-image: radial-gradient(ellipse 80% 50% at 50% -10%, rgba(124, 154, 255, 0.07), transparent);
+      background-attachment: fixed;
+      min-height: 100vh;
+    }
+    .container { max-width: 1140px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+    .mono { font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+    /* === Brand header === */
+    header.brand {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 2rem;
+      padding-bottom: 1.75rem;
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .brand h1 {
+      margin: 0;
+      font-size: 1.7rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+    .brand-logo {
+      width: 38px; height: 38px;
+      border-radius: 9px;
+      background: var(--gradient);
+      display: inline-flex;
+      align-items: center; justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 1.2rem;
+      letter-spacing: -0.05em;
+      box-shadow: 0 4px 14px rgba(79, 95, 255, 0.25);
+    }
+    .brand h1 .sub {
+      color: var(--text-muted);
+      font-weight: 500;
+      font-size: 1rem;
+      letter-spacing: 0;
+      margin-left: 0.5rem;
+    }
+    .header-right { text-align: right; display: flex; flex-direction: column; gap: 0.6rem; align-items: flex-end; }
+    .header-tools { display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; justify-content: flex-end; }
+    .language-switcher {
+      display: inline-flex;
+      gap: 0.2rem;
+      padding: 0.2rem;
+      background: var(--surface-2);
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+    }
+    .language-switcher button {
+      min-width: 2.25rem;
+      padding: 0.28rem 0.5rem;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .language-switcher button[aria-pressed="true"] {
+      background: var(--surface-3);
+      color: var(--text);
+    }
+    .target-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.85rem;
+      background: var(--surface-2);
+      border: 1px solid var(--border-strong);
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.92rem;
+      font-weight: 500;
+    }
+    .target-chip::before {
+      content: '';
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--low);
+      box-shadow: 0 0 0 3px rgba(63, 185, 80, 0.18);
+    }
+    .meta {
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* === Hero risk card === */
+    .hero {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 2.5rem;
+      align-items: center;
+      padding: 2.25rem 2.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      margin-bottom: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%; right: -10%;
+      width: 70%; height: 200%;
+      background: radial-gradient(circle at center, rgba(124, 154, 255, 0.08) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .ring-wrap { position: relative; z-index: 1; }
+    .ring-wrap svg { display: block; }
+    .ring-track { stroke: var(--surface-3); }
+    .ring-progress {
+      stroke-linecap: round;
+      filter: drop-shadow(0 0 14px currentColor);
+      animation: ring-draw 1.8s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+    }
+    @keyframes ring-draw {
+      from { stroke-dashoffset: 440; }
+      to   { stroke-dashoffset: var(--ring-offset, 440); }
+    }
+    .ring-score {
+      font-family: 'Inter', sans-serif;
+      font-size: 52px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      fill: var(--text);
+    }
+    .ring-suffix {
+      font-size: 11px;
+      fill: var(--text-muted);
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .hero-info { position: relative; z-index: 1; }
+    .hero-info h2 {
+      margin: 0 0 0.5rem;
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      flex-wrap: wrap;
+    }
+    .hero-info > p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.98rem;
+      max-width: 55ch;
+    }
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+      gap: 0.6rem;
+      margin-top: 1.4rem;
+    }
+    .kpi {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 0.65rem 0.85rem;
+    }
+    .kpi-label {
+      display: block;
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+    }
+    .kpi-label .icon { margin-right: 0.3rem; color: var(--accent); }
+    .kpi-value {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-top: 0.25rem;
+    }
+    .kpi-value .denom { color: var(--text-muted); font-weight: 400; font-size: 0.85em; }
+
+    /* === Badges === */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.22rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border: 1px solid transparent;
+      line-height: 1.3;
+      white-space: nowrap;
+    }
+    .badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+      background: currentColor;
+    }
+    .badge-low      { color: var(--low);      background: rgba(63, 185, 80, 0.10);  border-color: rgba(63, 185, 80, 0.32); }
+    .badge-medium   { color: var(--medium);   background: rgba(210, 153, 34, 0.10); border-color: rgba(210, 153, 34, 0.32); }
+    .badge-high     { color: var(--high);     background: rgba(240, 136, 62, 0.12); border-color: rgba(240, 136, 62, 0.38); }
+    .badge-critical { color: var(--critical); background: rgba(248, 81, 73, 0.13);  border-color: rgba(248, 81, 73, 0.42); }
+    .badge-info     { color: var(--info);     background: rgba(88, 166, 255, 0.10); border-color: rgba(88, 166, 255, 0.32); }
+    .badge-unknown  { color: var(--unknown);  background: rgba(139, 148, 158, 0.10); border-color: rgba(139, 148, 158, 0.32); }
+    .badge.lg { font-size: 0.82rem; padding: 0.35rem 1rem; }
+
+    /* === Section dividers === */
+    h2.section-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+      margin: 0 0 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    h2.section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* === Phase grid === */
+    .phase-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+      gap: 0.9rem;
+      margin-bottom: 2.5rem;
+    }
+    .phase-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.2rem 1.25rem 1.3rem;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+      animation: fade-up 0.6s ease-out both;
+    }
+    .phase-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-strong);
+    }
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .phase-card:nth-child(1) { animation-delay: 0.05s; }
+    .phase-card:nth-child(2) { animation-delay: 0.1s; }
+    .phase-card:nth-child(3) { animation-delay: 0.15s; }
+    .phase-card:nth-child(4) { animation-delay: 0.2s; }
+    .phase-card:nth-child(5) { animation-delay: 0.25s; }
+
+    .phase-icon {
+      width: 40px; height: 40px;
+      border-radius: 9px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      display: inline-flex;
+      align-items: center; justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 0.95rem;
+      color: var(--accent);
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .phase-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: 0 0 0.2rem;
+      text-transform: capitalize;
+    }
+    .phase-desc {
+      font-size: 0.77rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin: 0 0 1.1rem;
+      min-height: 2.3em;
+    }
+    .phase-meter {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.45rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.92rem;
+    }
+    .phase-meter .score { font-weight: 700; }
+    .phase-meter .denom { color: var(--text-muted); font-weight: 400; font-size: 0.82em; }
+    .phase-meter .timing { color: var(--text-faint); font-size: 0.78rem; }
+    .phase-bar {
+      height: 6px;
+      background: var(--surface-3);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+    }
+    .phase-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      animation: bar-grow 1s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+      transform-origin: left center;
+    }
+    @keyframes bar-grow {
+      from { transform: scaleX(0); }
+      to   { transform: scaleX(1); }
+    }
+
+    /* === Block sections === */
+    section.block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 1.25rem;
+    }
+    section.block > h2.block-title {
+      margin: 0 0 1.25rem;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+    section.block > h2.block-title .count {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      background: var(--surface-2);
+      padding: 0.18rem 0.6rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* === Findings table === */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+    th, td {
+      text-align: left;
+      padding: 0.75rem 0.85rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+    th {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+    tbody tr:last-child td { border-bottom: 0; }
+    tbody tr { transition: background 0.15s; }
+    tbody tr:hover { background: var(--surface-2); }
+    .phase-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      background: var(--surface-2);
+      padding: 0.18rem 0.55rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+    }
+    .severity-col { width: 130px; white-space: nowrap; }
+    .phase-col    { width: 130px; white-space: nowrap; }
+
+    /* === Recommendations === */
+    .rec-list { display: grid; gap: 0.85rem; }
+    .rec-item {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 1rem;
+      padding: 1.1rem 1.25rem;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      border-left: 3px solid var(--accent);
+    }
+    .rec-item.priority-critical { border-left-color: var(--critical); }
+    .rec-item.priority-high     { border-left-color: var(--high); }
+    .rec-item.priority-medium   { border-left-color: var(--medium); }
+    .rec-item.priority-low      { border-left-color: var(--low); }
+    .rec-num {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: var(--surface-3);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+    .rec-title {
+      font-weight: 600;
+      font-size: 1rem;
+      margin: 0 0 0.35rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      letter-spacing: -0.005em;
+    }
+    .rec-body {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin: 0;
+    }
+    .rec-body code, code {
+      background: var(--bg);
+      color: var(--text);
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85em;
+    }
+
+    /* === Deep dive === */
+    .deep-dive { display: grid; gap: 0.7rem; margin-bottom: 1.5rem; }
+    .deep-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .deep-card > summary {
+      cursor: pointer;
+      padding: 0.85rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      list-style: none;
+      user-select: none;
+      text-transform: capitalize;
+    }
+    .deep-card > summary::-webkit-details-marker { display: none; }
+    .deep-card > summary::after {
+      content: '▾';
+      margin-left: auto;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      transition: transform 0.2s;
+      text-transform: none;
+    }
+    .deep-card[open] > summary::after { transform: rotate(180deg); }
+    .deep-card > summary:hover { background: var(--surface-2); }
+    .deep-card .deep-icon {
+      width: 30px; height: 30px;
+      border-radius: 7px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      display: inline-flex; align-items: center; justify-content: center;
+      color: var(--accent);
+      font-size: 1rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .deep-card .deep-timing {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-transform: none;
+    }
+    .deep-content {
+      padding: 0.5rem 1.25rem 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+    pre {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.1rem;
+      overflow-x: auto;
+      font-size: 0.8rem;
+      font-family: 'JetBrains Mono', monospace;
+      margin: 0;
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .err-box {
+      padding: 0.85rem 1rem;
+      background: rgba(248, 81, 73, 0.07);
+      border: 1px solid rgba(248, 81, 73, 0.3);
+      border-radius: 8px;
+      color: var(--critical);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+    }
+    .empty { color: var(--text-muted); font-style: italic; padding: 0.5rem 0; }
+
+    /* === Footer === */
+    footer.bottom {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+    }
+    footer.bottom strong { color: var(--text); font-weight: 700; letter-spacing: 0.1em; }
+
+    /* === Responsive === */
+    @media (max-width: 720px) {
+      .container { padding: 1.5rem 1rem; }
+      .hero { grid-template-columns: 1fr; gap: 1.5rem; padding: 1.5rem; }
+      header.brand { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .header-right { align-items: flex-start; text-align: left; }
+      .header-tools { justify-content: flex-start; }
+      .severity-col, .phase-col { width: auto; }
+      .rec-item { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="brand">
+      <h1>
+        <span class="brand-logo">D</span>
+        DOMINUS
+        <span class="sub" data-i18n="brandSubtitle">Reconocimiento OSINT</span>
+      </h1>
+      <div class="header-right">
+        <div class="header-tools">
+          <div class="language-switcher" role="group" aria-label="Idioma">
+            <button type="button" data-lang="es" aria-pressed="true">ES</button>
+            <button type="button" data-lang="ru" aria-pressed="false">RU</button>
+          </div>
+          <div class="target-chip">{{ target }}</div>
+        </div>
+        <div class="meta">
+          {{ generated_at }}{% if elapsed is not none %} · {{ elapsed }}s <span data-i18n="elapsed">transcurridos</span>{% endif %}
+        </div>
+      </div>
+    </header>
+
+    <div class="hero">
+      <div class="ring-wrap">
+        <svg width="200" height="200" viewBox="0 0 200 200" aria-label="Puntuacion de riesgo {{ risk.total or 0 }} de 100" data-risk-score="{{ risk.total or 0 }}">
+          <circle class="ring-track" cx="100" cy="100" r="70" fill="none" stroke-width="14"/>
+          <circle class="ring-progress"
+                  cx="100" cy="100" r="70"
+                  fill="none"
+                  stroke-width="14"
+                  stroke-dasharray="{{ ring.circumference }}"
+                  style="--ring-offset: {{ ring.offset }}; stroke: var(--{{ risk.label or 'unknown' }}); color: var(--{{ risk.label or 'unknown' }});"
+                  transform="rotate(-90 100 100)"/>
+          <text class="ring-score" x="100" y="100" text-anchor="middle" dy=".35em">{{ risk.total or 0 }}</text>
+          <text class="ring-suffix" x="100" y="138" text-anchor="middle" data-i18n="of100">DE 100</text>
+        </svg>
+      </div>
+      <div class="hero-info">
+        <h2>
+          <span data-i18n="riskPosture">Postura de riesgo</span>
+          <span class="badge badge-{{ risk.label or 'unknown' }} lg" data-severity-label="{{ risk.label or 'unknown' }}">
+            {{ {"critical": "critica", "high": "alta", "medium": "media", "low": "baja", "info": "info", "unknown": "desconocida"}.get(risk.label or "unknown", risk.label or "desconocida") }}
+          </span>
+        </h2>
+        <p data-i18n-summary
+           data-findings-count="{{ findings|length }}"
+           data-phases-count="{{ risk.breakdown|length }}"
+           data-recommendations-count="{{ recommendations|length }}">
+          {{ findings|length }} hallazgo{{ '' if findings|length == 1 else 's' }} detectado{{ '' if findings|length == 1 else 's' }} en
+          {{ risk.breakdown|length }} fase{{ '' if risk.breakdown|length == 1 else 's' }} de reconocimiento.
+          {% if recommendations %}
+          {{ recommendations|length }} recomendacion{{ '' if recommendations|length == 1 else 'es' }} abajo.
+          {% endif %}
+        </p>
+        {% if risk.breakdown %}
+        <div class="kpis">
+          {% for phase, info in risk.breakdown.items() %}
+          <div class="kpi">
+            <span class="kpi-label"><span class="icon">{{ phase_icons.get(phase, '◆') }}</span><span data-phase-label="{{ phase }}">{{ phase }}</span></span>
+            <span class="kpi-value">{{ info.score }}<span class="denom"> / {{ info.weight }}</span></span>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <h2 class="section-title" data-i18n="reconPhases">Fases de reconocimiento</h2>
+    <div class="phase-grid">
+      {% for phase, info in risk.breakdown.items() %}
+      <div class="phase-card">
+        <div class="phase-icon">{{ phase_icons.get(phase, '◆') }}</div>
+        <h3 class="phase-name" data-phase-label="{{ phase }}">{{ phase }}</h3>
+        <p class="phase-desc" data-phase-description="{{ phase }}">{{ {
+          "whois": "Metadatos de registrador, titularidad y ciclo de vida",
+          "dns": "Registros de resolucion y postura de autenticacion de email",
+          "subdomains": "Enumeracion pasiva de subdominios mediante Certificate Transparency",
+          "ports": "Servicios TCP abiertos y huellas de version",
+          "headers": "Cabeceras de respuesta HTTP y configuracion de seguridad"
+        }.get(phase, phase_descriptions.get(phase, "")) }}</p>
+        <div class="phase-meter">
+          <span class="score">{{ info.score }}<span class="denom"> / {{ info.weight }}</span></span>
+          {% if timings.get(phase) is not none %}
+          <span class="timing">{{ timings.get(phase) }}s</span>
+          {% endif %}
+        </div>
+        <div class="phase-bar">
+          <div class="phase-bar-fill"
+               style="width: {{ ((info.score / info.weight * 100) | round(0, 'floor')) if info.weight else 0 }}%;
+                      background: var(--{{ phase_severity.get(phase, 'unknown') }});"></div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <section class="block">
+      <h2 class="block-title"><span data-i18n="findings">Hallazgos</span> <span class="count">{{ findings|length }}</span></h2>
+      {% if findings %}
+      <table>
+        <thead>
+          <tr>
+            <th class="severity-col" data-i18n="severity">Severidad</th>
+            <th class="phase-col" data-i18n="phase">Fase</th>
+            <th data-i18n="description">Descripcion</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for f in findings %}
+          <tr>
+            <td class="severity-col"><span class="badge badge-{{ f.severity }}" data-severity-label="{{ f.severity }}">{{ {"critical": "critica", "high": "alta", "medium": "media", "low": "baja", "info": "info", "unknown": "desconocida"}.get(f.severity, f.severity) }}</span></td>
+            <td class="phase-col"><span class="phase-tag" data-phase-label="{{ f.phase }}">{{ f.phase }}</span></td>
+            <td>{{ f.text }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p class="empty" data-i18n="noFindings">No se han generado hallazgos. El objetivo tiene una exposicion minima o las fases no produjeron senal.</p>
+      {% endif %}
+    </section>
+
+    {% if recommendations %}
+    <section class="block">
+      <h2 class="block-title"><span data-i18n="recommendations">Recomendaciones</span> <span class="count">{{ recommendations|length }}</span></h2>
+      <div class="rec-list">
+        {% for r in recommendations %}
+        <div class="rec-item priority-{{ r.priority }}">
+          <div class="rec-num">{{ loop.index }}</div>
+          <div>
+            <h3 class="rec-title"><span data-recommendation-title="{{ r.title | striptags }}">{{ r.title | safe }}</span> <span class="badge badge-{{ r.priority }}" data-severity-label="{{ r.priority }}">{{ {"critical": "critica", "high": "alta", "medium": "media", "low": "baja", "info": "info", "unknown": "desconocida"}.get(r.priority, r.priority) }}</span></h3>
+            <p class="rec-body" data-recommendation-body="{{ r.title | striptags }}">{{ r.body | safe }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+    {% endif %}
+
+    <h2 class="section-title" data-i18n="perPhaseData">Datos por fase</h2>
+    <div class="deep-dive">
+      {% for name, data in phases.items() %}
+      <details class="deep-card">
+        <summary>
+          <span class="deep-icon">{{ phase_icons.get(name, '◆') }}</span>
+          <span data-phase-label="{{ name }}">{{ name }}</span>
+          {% if timings.get(name) is not none %}<span class="deep-timing">{{ timings.get(name) }}s</span>{% endif %}
+        </summary>
+        <div class="deep-content">
+          {% if data.error %}
+            <div class="err-box">{{ data.error }}</div>
+          {% else %}
+            <pre>{{ data | tojson(indent=2) }}</pre>
+          {% endif %}
+        </div>
+      </details>
+      {% endfor %}
+
+      <details class="deep-card">
+        <summary>
+          <span class="deep-icon">◇</span>
+          <span data-i18n="fullRunOutput">Salida completa de la ejecucion (JSON)</span>
+        </summary>
+        <div class="deep-content">
+          <pre>{{ raw_json }}</pre>
+        </div>
+      </details>
+    </div>
+
+    {%- set lr = phases.get("leakradar", {}) %}
+    {% if not lr.get("skipped") and not lr.get("error") and lr.get("total", 0) >= 0 %}
+    <section class="block" style="border-left: 3px solid var(--critical);">
+      <h2 class="block-title">
+        <span data-i18n="leakedCredentials">☢ Credenciales filtradas</span>
+        <span class="count">{{ lr.total or 0 }}</span>
+      </h2>
+      {% if lr.total and lr.total > 0 %}
+      <p style="color: var(--text-muted); font-size: 0.92rem; margin: 0 0 1.25rem;">{{ lr.risk_note }}</p>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 0.75rem; margin-bottom: 1.5rem;">
+        <div class="kpi">
+          <span class="kpi-label"><span class="icon">👤</span><span data-i18n="employees">Empleados</span></span>
+          <span class="kpi-value">{{ lr.employees_count or 0 }}</span>
+        </div>
+        <div class="kpi">
+          <span class="kpi-label"><span class="icon">🧑‍💼</span><span data-i18n="clients">Clientes</span></span>
+          <span class="kpi-value">{{ lr.clients_count or 0 }}</span>
+        </div>
+        <div class="kpi">
+          <span class="kpi-label"><span class="icon">🔗</span><span data-i18n="thirdParties">Terceros</span></span>
+          <span class="kpi-value">{{ lr.third_party_count or 0 }}</span>
+        </div>
+      </div>
+      {% if lr.sample_emails %}
+      <h3 style="font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); margin: 0 0 0.75rem; font-weight: 700;" data-i18n="detectedEmails">Emails detectados (muestra)</h3>
+      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+        {% for email in lr.sample_emails %}
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; padding: 0.25rem 0.65rem; background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px; color: var(--text-muted);">{{ email }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% else %}
+      <p style="color: var(--text-muted); font-size: 0.92rem; margin: 0;">{{ lr.risk_note or "Sin credenciales filtradas detectadas para este dominio." }}</p>
+      {% endif %}
+    </section>
+    {% elif lr.get("skipped") %}
+    <section class="block" style="opacity: 0.6;">
+      <h2 class="block-title"><span data-i18n="leakedCredentials">☢ Credenciales filtradas</span> <span class="count">-</span></h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">⚠ {{ lr.reason }}</p>
+    </section>
+    {% endif %}
+
+    <footer class="bottom">
+      <strong>DOMINUS</strong> · <span data-i18n="footerToolkit">kit de reconocimiento OSINT</span> · {{ generated_at }}
+    </footer>
+  </div>
+  <script>
+    (function () {
+      const storageKey = 'dominus.report.language';
+      const fallbackLanguage = 'es';
+      const translations = {
+        es: {
+          brandSubtitle: 'Reconocimiento OSINT',
+          elapsed: 'transcurridos',
+          of100: 'DE 100',
+          riskPosture: 'Postura de riesgo',
+          reconPhases: 'Fases de reconocimiento',
+          findings: 'Hallazgos',
+          severity: 'Severidad',
+          phase: 'Fase',
+          description: 'Descripcion',
+          noFindings: 'No se han generado hallazgos. El objetivo tiene una exposicion minima o las fases no produjeron senal.',
+          recommendations: 'Recomendaciones',
+          perPhaseData: 'Datos por fase',
+          fullRunOutput: 'Salida completa de la ejecucion (JSON)',
+          leakedCredentials: '☢ Credenciales filtradas',
+          employees: 'Empleados',
+          clients: 'Clientes',
+          thirdParties: 'Terceros',
+          detectedEmails: 'Emails detectados (muestra)',
+          footerToolkit: 'kit de reconocimiento OSINT',
+          severityLabels: {
+            critical: 'critica',
+            high: 'alta',
+            medium: 'media',
+            low: 'baja',
+            info: 'info',
+            unknown: 'desconocida'
+          },
+          phaseDescriptions: {
+            whois: 'Metadatos de registrador, titularidad y ciclo de vida',
+            dns: 'Registros de resolucion y postura de autenticacion de email',
+            subdomains: 'Enumeracion pasiva de subdominios mediante Certificate Transparency',
+            ports: 'Servicios TCP abiertos y huellas de version',
+            headers: 'Cabeceras de respuesta HTTP y configuracion de seguridad'
+          },
+          phaseLabels: {
+            whois: 'WHOIS',
+            dns: 'DNS',
+            subdomains: 'Subdominios',
+            ports: 'Puertos',
+            headers: 'Cabeceras',
+            leakradar: 'LeakRadar'
+          },
+          recommendationTitles: {
+            'Renew the domain registration': 'Renovar el registro del dominio',
+            'Restrict administrative protocols': 'Restringir protocolos administrativos',
+            'Tighten the SPF policy to -all': 'Endurecer la politica SPF a <code>-all</code>',
+            'Audit internet-facing services': 'Auditar servicios expuestos a internet',
+            'Publish an SPF record': 'Publicar un registro SPF',
+            'Publish a DMARC record': 'Publicar un registro DMARC',
+            'Enable HSTS': 'Activar HSTS',
+            'Define a Content-Security-Policy': 'Definir una Content-Security-Policy',
+            'Escalate DMARC enforcement': 'Aumentar la aplicacion de DMARC',
+            'Protect against clickjacking': 'Proteger contra clickjacking',
+            'Audit and trim the subdomain footprint': 'Auditar y reducir la huella de subdominios',
+            'Account for new-domain risk context': 'Considerar el riesgo de dominio reciente',
+            'Set X-Content-Type-Options: nosniff': 'Configurar <code>X-Content-Type-Options: nosniff</code>',
+            'Add a Referrer-Policy header': 'Anadir una cabecera Referrer-Policy',
+            'Declare a Permissions-Policy': 'Declarar una Permissions-Policy',
+            'Suppress the Server header': 'Ocultar la cabecera Server',
+            'Enable DKIM signing': 'Activar firma DKIM',
+            'Enable WHOIS privacy': 'Activar privacidad WHOIS',
+            'Consider tightening SPF to hard-fail': 'Considerar endurecer SPF a hard-fail'
+          },
+          recommendationBodies: {
+            'Renew the domain registration': 'El dominio se acerca a su expiracion. Un dominio caducado puede ser secuestrado o dejar fuera de servicio todos los servicios dependientes.',
+            'Restrict administrative protocols': 'Coloca RDP, SMB y Telnet detras de una VPN o bastion. Nunca los expongas directamente a internet.',
+            'Tighten the SPF policy to -all': 'Un SPF permisivo (<code>+all</code> o <code>?all</code>) permite que cualquiera suplante tu dominio. Tras verificar la lista de remitentes, cambia a <code>-all</code>.',
+            'Audit internet-facing services': 'Cada puerto abierto aumenta la superficie de ataque. Confirma que el servicio esta actualizado y limita el acceso con firewall o listas de permitidos.',
+            'Publish an SPF record': 'Anade un registro TXT como <code>v=spf1 include:_spf.yourprovider.com -all</code> para declarar que servidores pueden enviar correo en tu nombre.',
+            'Publish a DMARC record': 'Empieza con <code>_dmarc TXT "v=DMARC1; p=none; rua=mailto:dmarc@yourdomain"</code> para recopilar informes agregados.',
+            'Enable HSTS': 'Configura <code>Strict-Transport-Security: max-age=31536000; includeSubDomains</code> para forzar HTTPS en navegadores compatibles.',
+            'Define a Content-Security-Policy': 'Define una CSP que limite origenes de scripts, estilos y frames. Incluso una politica inicial permisiva mejora la defensa frente a XSS.',
+            'Escalate DMARC enforcement': 'Cuando los informes agregados esten limpios, escala de <code>p=none</code> a <code>p=quarantine</code> y finalmente a <code>p=reject</code>.',
+            'Protect against clickjacking': 'Configura <code>X-Frame-Options: DENY</code> o la directiva moderna CSP <code>frame-ancestors &#39;none&#39;</code>.',
+            'Audit and trim the subdomain footprint': 'Un inventario amplio de subdominios aumenta la superficie de ataque. Retira subdominios sin uso y mejora la higiene DNS.',
+            'Account for new-domain risk context': 'Los dominios registrados recientemente se usan a menudo en phishing. Incluye este factor en senales de reputacion e inteligencia de amenazas.',
+            'Set X-Content-Type-Options: nosniff': 'Evita que los navegadores reinterpreten tipos MIME declarados y previene ataques de confusion MIME.',
+            'Add a Referrer-Policy header': 'Configura <code>Referrer-Policy: strict-origin-when-cross-origin</code> para limitar fugas de URL a terceros.',
+            'Declare a Permissions-Policy': 'Restringe el acceso a funciones sensibles del navegador (camara, geolocalizacion, pagos, etc.) que el sitio no usa.',
+            'Suppress the Server header': 'Configura el servidor web para ocultar su cabecera <code>Server</code> y reducir el fingerprinting de la pila.',
+            'Enable DKIM signing': 'Genera una clave DKIM en tu proveedor de correo y publica la parte publica como TXT en <code>&lt;selector&gt;._domainkey.yourdomain</code>.',
+            'Enable WHOIS privacy': 'La mayoria de registradores ofrecen privacidad WHOIS gratuita. Ocultar datos de contacto reduce spam, phishing e ingenieria social.',
+            'Consider tightening SPF to hard-fail': '<code>~all</code> (soft-fail) aun permite remitentes no listados. Cuando la lista sea fiable, cambia a <code>-all</code>.'
+          },
+          riskAria: function (score) { return 'Puntuacion de riesgo ' + score + ' de 100'; },
+          summary: function (findings, phases, recommendations) {
+            const findingWord = findings === 1 ? 'hallazgo detectado' : 'hallazgos detectados';
+            const phaseWord = phases === 1 ? 'fase de reconocimiento' : 'fases de reconocimiento';
+            const recText = recommendations > 0
+              ? ' ' + recommendations + ' ' + (recommendations === 1 ? 'recomendacion abajo.' : 'recomendaciones abajo.')
+              : '';
+            return findings + ' ' + findingWord + ' en ' + phases + ' ' + phaseWord + '.' + recText;
+          }
+        },
+        ru: {
+          brandSubtitle: 'OSINT-разведка',
+          elapsed: 'выполнено',
+          of100: 'ИЗ 100',
+          riskPosture: 'Профиль риска',
+          reconPhases: 'Этапы разведки',
+          findings: 'Находки',
+          severity: 'Критичность',
+          phase: 'Этап',
+          description: 'Описание',
+          noFindings: 'Находки не обнаружены. У цели минимальная экспозиция или этапы не дали сигнала.',
+          recommendations: 'Рекомендации',
+          perPhaseData: 'Данные по этапам',
+          fullRunOutput: 'Полный вывод запуска (JSON)',
+          leakedCredentials: '☢ Утекшие учетные данные',
+          employees: 'Сотрудники',
+          clients: 'Клиенты',
+          thirdParties: 'Третьи стороны',
+          detectedEmails: 'Найденные email (пример)',
+          footerToolkit: 'инструментарий OSINT-разведки',
+          severityLabels: {
+            critical: 'критическая',
+            high: 'высокая',
+            medium: 'средняя',
+            low: 'низкая',
+            info: 'инфо',
+            unknown: 'неизвестно'
+          },
+          phaseDescriptions: {
+            whois: 'Метаданные регистратора, владельца и жизненного цикла',
+            dns: 'Записи разрешения имен и состояние email-аутентификации',
+            subdomains: 'Пассивный поиск поддоменов через Certificate Transparency',
+            ports: 'Открытые TCP-сервисы и отпечатки версий',
+            headers: 'HTTP-заголовки ответа и настройки безопасности'
+          },
+          phaseLabels: {
+            whois: 'WHOIS',
+            dns: 'DNS',
+            subdomains: 'Поддомены',
+            ports: 'Порты',
+            headers: 'Заголовки',
+            leakradar: 'LeakRadar'
+          },
+          recommendationTitles: {
+            'Renew the domain registration': 'Продлить регистрацию домена',
+            'Restrict administrative protocols': 'Ограничить административные протоколы',
+            'Tighten the SPF policy to -all': 'Ужесточить SPF-политику до <code>-all</code>',
+            'Audit internet-facing services': 'Проверить сервисы, доступные из интернета',
+            'Publish an SPF record': 'Опубликовать SPF-запись',
+            'Publish a DMARC record': 'Опубликовать DMARC-запись',
+            'Enable HSTS': 'Включить HSTS',
+            'Define a Content-Security-Policy': 'Настроить Content-Security-Policy',
+            'Escalate DMARC enforcement': 'Усилить применение DMARC',
+            'Protect against clickjacking': 'Защититься от clickjacking',
+            'Audit and trim the subdomain footprint': 'Проверить и сократить набор поддоменов',
+            'Account for new-domain risk context': 'Учесть риск недавно созданного домена',
+            'Set X-Content-Type-Options: nosniff': 'Настроить <code>X-Content-Type-Options: nosniff</code>',
+            'Add a Referrer-Policy header': 'Добавить заголовок Referrer-Policy',
+            'Declare a Permissions-Policy': 'Задать Permissions-Policy',
+            'Suppress the Server header': 'Скрыть заголовок Server',
+            'Enable DKIM signing': 'Включить DKIM-подпись',
+            'Enable WHOIS privacy': 'Включить приватность WHOIS',
+            'Consider tightening SPF to hard-fail': 'Рассмотреть ужесточение SPF до hard-fail'
+          },
+          recommendationBodies: {
+            'Renew the domain registration': 'Срок регистрации домена подходит к концу. Истекший домен могут перехватить, что приведет к отказу всех зависимых сервисов.',
+            'Restrict administrative protocols': 'Разместите RDP, SMB и Telnet за VPN или bastion-хостом. Не открывайте их напрямую в интернет.',
+            'Tighten the SPF policy to -all': 'Разрешающая SPF-политика (<code>+all</code> или <code>?all</code>) позволяет подделывать отправителя от вашего домена. После проверки списка отправителей перейдите на <code>-all</code>.',
+            'Audit internet-facing services': 'Каждый открытый порт увеличивает поверхность атаки. Проверьте актуальность сервиса и ограничьте доступ firewall-правилами или allowlist.',
+            'Publish an SPF record': 'Добавьте TXT-запись вида <code>v=spf1 include:_spf.yourprovider.com -all</code>, чтобы указать серверы, которым разрешено отправлять почту от вашего имени.',
+            'Publish a DMARC record': 'Начните с <code>_dmarc TXT "v=DMARC1; p=none; rua=mailto:dmarc@yourdomain"</code>, чтобы собирать агрегированные отчеты.',
+            'Enable HSTS': 'Настройте <code>Strict-Transport-Security: max-age=31536000; includeSubDomains</code>, чтобы совместимые браузеры принудительно использовали HTTPS.',
+            'Define a Content-Security-Policy': 'Опишите CSP с разрешенными источниками скриптов, стилей и фреймов. Даже мягкая стартовая политика повышает защиту от XSS.',
+            'Escalate DMARC enforcement': 'Когда агрегированные отчеты станут чистыми, перейдите с <code>p=none</code> на <code>p=quarantine</code>, а затем на <code>p=reject</code>.',
+            'Protect against clickjacking': 'Настройте <code>X-Frame-Options: DENY</code> или современную CSP-директиву <code>frame-ancestors &#39;none&#39;</code>.',
+            'Audit and trim the subdomain footprint': 'Большой набор поддоменов расширяет поверхность атаки. Удалите неиспользуемые поддомены и улучшите DNS-гигиену.',
+            'Account for new-domain risk context': 'Недавно зарегистрированные домены часто применяются для phishing. Учитывайте это в reputation- и threat-intel-сигналах.',
+            'Set X-Content-Type-Options: nosniff': 'Запрещает браузерам переопределять объявленные MIME-типы и снижает риск MIME-confusion атак.',
+            'Add a Referrer-Policy header': 'Настройте <code>Referrer-Policy: strict-origin-when-cross-origin</code>, чтобы ограничить утечку URL сторонним ресурсам.',
+            'Declare a Permissions-Policy': 'Ограничьте доступ к мощным возможностям браузера (камера, геолокация, платежи и т. п.), которые сайт не использует.',
+            'Suppress the Server header': 'Настройте веб-сервер так, чтобы скрыть заголовок <code>Server</code> и усложнить fingerprinting стека.',
+            'Enable DKIM signing': 'Создайте DKIM-ключ у почтового провайдера и опубликуйте открытую часть TXT-записью в <code>&lt;selector&gt;._domainkey.yourdomain</code>.',
+            'Enable WHOIS privacy': 'Большинство регистраторов предлагают бесплатную приватность WHOIS. Сокрытие контактных данных снижает spam, phishing и social engineering.',
+            'Consider tightening SPF to hard-fail': '<code>~all</code> (soft-fail) все еще допускает неуказанных отправителей. Когда список отправителей станет надежным, перейдите на <code>-all</code>.'
+          },
+          riskAria: function (score) { return 'Оценка риска ' + score + ' из 100'; },
+          summary: function (findings, phases, recommendations) {
+            const recText = recommendations > 0 ? ' Рекомендаций: ' + recommendations + '.' : '';
+            return 'Обнаружено: ' + findings + '. Этапов разведки: ' + phases + '.' + recText;
+          }
+        }
+      };
+
+      function getSavedLanguage() {
+        try {
+          return localStorage.getItem(storageKey) || fallbackLanguage;
+        } catch (error) {
+          return fallbackLanguage;
+        }
+      }
+
+      function saveLanguage(language) {
+        try {
+          localStorage.setItem(storageKey, language);
+        } catch (error) {
+          // Ignore storage failures; the selector still works for the current page.
+        }
+      }
+
+      function asNumber(value) {
+        const parsed = Number(value);
+        return Number.isFinite(parsed) ? parsed : 0;
+      }
+
+      function applyLanguage(language) {
+        const current = translations[language] ? language : fallbackLanguage;
+        const dictionary = translations[current];
+        document.documentElement.lang = current;
+
+        document.querySelectorAll('[data-i18n]').forEach(function (node) {
+          const key = node.getAttribute('data-i18n');
+          if (dictionary[key]) {
+            node.textContent = dictionary[key];
+          }
+        });
+
+        document.querySelectorAll('[data-i18n-summary]').forEach(function (node) {
+          node.textContent = dictionary.summary(
+            asNumber(node.dataset.findingsCount),
+            asNumber(node.dataset.phasesCount),
+            asNumber(node.dataset.recommendationsCount)
+          );
+        });
+
+        document.querySelectorAll('[data-severity-label]').forEach(function (node) {
+          const key = node.getAttribute('data-severity-label');
+          node.textContent = dictionary.severityLabels[key] || key;
+        });
+
+        document.querySelectorAll('[data-phase-description]').forEach(function (node) {
+          const key = node.getAttribute('data-phase-description');
+          node.textContent = dictionary.phaseDescriptions[key] || node.textContent;
+        });
+
+        document.querySelectorAll('[data-phase-label]').forEach(function (node) {
+          const key = node.getAttribute('data-phase-label');
+          node.textContent = dictionary.phaseLabels[key] || key;
+        });
+
+        document.querySelectorAll('[data-recommendation-title]').forEach(function (node) {
+          const key = node.getAttribute('data-recommendation-title');
+          node.innerHTML = dictionary.recommendationTitles[key] || node.innerHTML;
+        });
+
+        document.querySelectorAll('[data-recommendation-body]').forEach(function (node) {
+          const key = node.getAttribute('data-recommendation-body');
+          node.innerHTML = dictionary.recommendationBodies[key] || node.innerHTML;
+        });
+
+        document.querySelectorAll('[data-risk-score]').forEach(function (node) {
+          node.setAttribute('aria-label', dictionary.riskAria(node.dataset.riskScore || '0'));
+        });
+
+        document.querySelectorAll('[data-lang]').forEach(function (button) {
+          button.setAttribute('aria-pressed', String(button.dataset.lang === current));
+        });
+      }
+
+      document.querySelectorAll('[data-lang]').forEach(function (button) {
+        button.addEventListener('click', function () {
+          const language = button.dataset.lang;
+          saveLanguage(language);
+          applyLanguage(language);
+        });
+      });
+
+      applyLanguage(getSavedLanguage());
+    }());
+  </script>
+</body>
+</html>
