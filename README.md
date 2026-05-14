@@ -79,16 +79,16 @@ DOMINUS and SENTINEL are designed to work together. The natural workflow is:
 3. Cross-reference findings → complete threat picture
 ```
 
-**Example with evolve.es:**
+**Example with <domain>:**
 
 ```bash
 # Step 1: DOMINUS extracts IPs from DNS
-python dominus.py evolve.es --only dns
-# → Found: 79.137.114.210 and 54.38.163.115
+python dominus.py ****.es --only dns
+# → Found: XX.XXX.XXX.XXX and XX.XX.XXX.XXX
 
 # Step 2: SENTINEL analyzes each IP
-python sentinel.py 79.137.114.210
-python sentinel.py 54.38.163.115
+python sentinel.py XX.XXX.XXX.XXX
+python sentinel.py XX.XX.XXX.XXX
 # → Both hosted on OVH/Wetopi, Threat Score 2/100, clean
 ```
 
