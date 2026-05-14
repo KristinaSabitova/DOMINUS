@@ -203,6 +203,11 @@ dominus/
 └── output/
 ```
 
+
+<img width="1903" height="2778" alt="DOMINUS — " src="https://github.com/user-attachments/assets/43c45e5f-04e7-43c2-b048-df254a7bec59" />
+
+
+
 ---
 
 ## Legal notice
