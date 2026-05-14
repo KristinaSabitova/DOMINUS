@@ -168,7 +168,7 @@ DOMINUS(dominio)
 | ¿Dónde está físicamente esta IP y quién la posee? | SENTINEL (geolocalización) |
 | ¿Viene este ataque de infraestructura cloud? | SENTINEL (detección cloud) |
 
-**Conclusión combinada del ejemplo (evolve.es):**
+**Conclusión combinada de un ejemplo (ejemplo.es):**
 
 DOMINUS revela: DMARC p=none (suplantación posible), SPF soft-fail, banner de servidor (wetopi) expuesto, sin cabecera CSP. Risk Score: 14/100 BAJO.
 
@@ -208,6 +208,12 @@ SENTINEL revela (ambas IPs): Hosting OVH/Wetopi, España + Países Bajos, Threat
 - No interactúa con ningún sistema más allá de leer respuestas disponibles públicamente
 
 Todos los datos recopilados por ambas herramientas ya son públicos. La suite automatiza lo que un analista humano haría manualmente usando whois.domaintools.com, mxtoolbox.com, shodan.io, abuseipdb.com y búsqueda en Google.
+
+
+<img width="1903" height="2778" alt="DOMINUS — " src="https://github.com/user-attachments/assets/79ffe2e5-ca3d-4b75-ac0c-1671319352c7" />
+
+
+<img width="1510" height="2585" alt="sentinel" src="https://github.com/user-attachments/assets/6eddfc1d-fc7a-425c-8bdc-76f388e0b74e" />
 
 ---
 
